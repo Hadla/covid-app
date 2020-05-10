@@ -5,27 +5,35 @@ const port = 5000;
 
 
 
-app.get('/', async function (req, res) {
+app.get('/current', async function (req, res) {
     try {
-      const currentResponse = await fetch('https://covidtracking.com/api/v1/states.json')
-      const currentData = await currentResponse.json();
-      
+        const currentResponse = await fetch('https://covidtracking.com/api/v1/states.json')
+        const currentData = await currentResponse.json();
+        const deathResponse = await fetch('https://covidtracking.com/api/v1/states/daily.json')
+        const deathData = await deathResponse.json();
 
-      const currentResult = currentData.map((element) => {
-        return {
-            state: element.state,
-            hospitalizedCurrently: element.hospitalizedCurrently
-        }
-      })
+        // Currently hospitalized per US state
+        const currentResult = currentData.map((element) => {
+            return {
+                usState: element.state,
+                hospitalized: element.hospitalizedCurrently
+            }
+        });
+        // Daily death per US state
+        const deathResult = deathData.map((element) => {
+            return {
+                death: element.death
+            }
+        });
 
-      const result = [...currentResult]
+        const result = [...currentResult, deathResult]
 
-      console.log('result', result)
-      res.json(result)
+        console.log('result', result)
+        res.json(result)
     } catch (error) {
-      console.log(error.message)
+        console.log(error.message)
     }
-  })
+})
 
 
 
