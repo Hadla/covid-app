@@ -71,7 +71,8 @@ class Covid extends Component {
 
         return (
             <div>
-                <h1 style={{fontWeight: "300"}}><span style={{fontWeight: "500"}} >Covid-19:</span> Live Corona statistics of the U.S</h1>
+                <h1 style={{fontWeight: "300", marginBottom:"0"}}><span style={{fontWeight: "500"}} >Covid-19:</span> Live Corona statistics of the U.S</h1>
+                <p align="left" style={{ fontSize:"0.7rem", fontWeight:"300", fontStyle:"italic", marginTop:"0", marginBottom:"1rem", marginLeft:"0.5rem"}}><span style={{fontWeight:"500"}}>No Data:</span> This means that the state has not yet given any updated information yet.</p>
                 {this.covidDataElements()}
             </div >
         );
