@@ -5,6 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin-top: 2rem;
+  margin-bottom: 5rem;
+  background: #282c34;
 }
 
 code {
@@ -15,3 +18,10 @@ code {
 .table {
   min-width: 10em;
 }
+
+.header-title-main {
+  font-weight: 10rem;
+}
+
+
+
