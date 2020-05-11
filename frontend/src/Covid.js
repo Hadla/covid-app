@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import { states } from './usStates';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -27,15 +28,27 @@ class Covid extends Component {
 
     }
 
-    getCovidData() {
-        return axios.get("/current")
-            .then(body => {
-                console.log(body);
-                this.setState({
-                    ...this.state,
-                    covidData: body.data
-                })
-            })
+    async getCovidData()  {
+        let deathData = await axios.get("/death");
+        let currentData = await axios.get("/current");
+        let finalData = currentData.data.map(currentElement => {
+            let death = deathData.data.find(deathElement => 
+                currentElement.usState === deathElement.usState
+            )
+            return {...currentElement, death: death.totalDeaths}
+        })
+        this.setState({
+            ...this.state,
+            covidData: finalData
+        })
+        // return axios.get("/current")
+        //     .then(body => {
+        //         console.log(body);
+        //         return this.setState({
+        //             ...this.state,
+        //             covidData: body.data
+        //         })
+        //     })
     }
     covidDataElements() {
         console.log(this.state.covidData);
@@ -50,12 +63,12 @@ class Covid extends Component {
           </TableRow>
         </TableHead>
         <TableBody>
-        {this.state.covidData.map((row) => (
-            <TableRow key={row.name}>
+        {this.state.covidData.map((row, index) => (
+            <TableRow key={'covidRow'+index}>
               
-              <TableCell align="left">{row.usState}</TableCell>
+              <TableCell align="left">{states[row.usState]}</TableCell>
               <TableCell align="left">{row.hospitalized || 'No data'}</TableCell>
-              <TableCell align="left">{'Placeholder' || 'No data'}</TableCell>
+              <TableCell align="left">{row.death || 'No data'}</TableCell>
  
             </TableRow>
           ))}
